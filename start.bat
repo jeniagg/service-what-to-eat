@@ -1,0 +1,1 @@
+java -jar target\what-to-eat-0.0.1-SNAPSHOT.jar -Dspring.config.location=config\application.yml
