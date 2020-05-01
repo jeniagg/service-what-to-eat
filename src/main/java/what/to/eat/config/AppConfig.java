@@ -2,7 +2,6 @@ package what.to.eat.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import what.to.eat.repositories.RecipeRepository;
 import what.to.eat.services.RecipeService;
 
 @Configuration
