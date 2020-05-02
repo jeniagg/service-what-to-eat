@@ -1,20 +1,16 @@
 server:
   port: 8888
+  contextPath: /what-to-eat
+liquibase:
+  change-log: classpath:/db/changelog-master.xml
 spring:
   application:
     name: What to eat
-  liquibase:
-    change-log: classpath:/db/changelog-master.xml
   datasource:
     url: jdbc:mysql://localhost:3306/what_to_eat
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
   main:
     allow-bean-definition-overriding: true
 
