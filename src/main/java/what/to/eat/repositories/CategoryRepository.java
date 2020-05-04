@@ -8,6 +8,6 @@ import what.to.eat.entities.Category;
 @Repository
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
-    @Query("SELECT c FROM Category c WHERE id = ?1")
-    Category getCategoryById(Integer id);
+    @Query("SELECT c.name FROM Category c WHERE id = ?1")
+    String getCategoryNameById(Integer id);
 }

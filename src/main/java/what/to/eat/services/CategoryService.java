@@ -12,12 +12,7 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepo;
 
-    public Category findCategory(Integer id) {
-        return categoryRepo.getCategoryById(id);
-    }
-
-    public CategoryDto convertToDto(Integer id) {
-        Category category = findCategory(id);
-        return new CategoryDto(id, category.getName());
+    public String getCategoryName(Integer id) {
+        return categoryRepo.getCategoryNameById(id);
     }
 }

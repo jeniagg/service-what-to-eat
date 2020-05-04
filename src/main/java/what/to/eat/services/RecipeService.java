@@ -30,7 +30,7 @@ public class RecipeService {
     public RecipeDto convertToDto(Recipe recipe) {
         return new RecipeDto(recipe.getId(), recipe.getName(), recipe.getDescription(),
                 recipe.getUserId(), recipe.getSteps(), recipe.getCookingMethodId(),
-                categoryService.convertToDto(recipe.getCategoryId()), recipe.getComment());
+                categoryService.getCategoryName(recipe.getCategoryId()), recipe.getComment());
     }
 
     public List<AllRecipesDto> convertToDto(List<Recipe> recipes) {
