@@ -11,7 +11,7 @@ public class RecipeDto {
     private Integer userId;
     private String steps;
     private Integer cookingMethodId;
-    private Integer categoryId;
+    private CategoryDto category;
     private String comment;
 
     @JsonCreator
@@ -21,7 +21,7 @@ public class RecipeDto {
                      @JsonProperty("userId") Integer userId,
                      @JsonProperty("steps") String steps,
                      @JsonProperty("cookingMethodId") Integer cookingMethodId,
-                     @JsonProperty("categoryId") Integer categoryId,
+                     @JsonProperty("category") CategoryDto category,
                      @JsonProperty("comment") String comment) {
         this.id = id;
         this.name = name;
@@ -29,7 +29,7 @@ public class RecipeDto {
         this.userId = userId;
         this.steps = steps;
         this.cookingMethodId = cookingMethodId;
-        this.categoryId = categoryId;
+        this.category = category;
         this.comment = comment;
 
     }
@@ -57,12 +57,12 @@ public class RecipeDto {
         return comment;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryId(CategoryDto category) {
+        this.category = category;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public CategoryDto getCategory() {
+        return category;
     }
 
     public void setCookingMethodId(Integer cookingMethodId) {

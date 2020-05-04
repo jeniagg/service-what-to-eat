@@ -16,6 +16,9 @@ public class RecipeService {
     @Autowired
     RecipeRepository recipeRepo;
 
+    @Autowired
+    CategoryService categoryService;
+
     public List<Recipe> getAllRecipeNames() {
         return recipeRepo.findAll();
     }
@@ -27,7 +30,7 @@ public class RecipeService {
     public RecipeDto convertToDto(Recipe recipe) {
         return new RecipeDto(recipe.getId(), recipe.getName(), recipe.getDescription(),
                 recipe.getUserId(), recipe.getSteps(), recipe.getCookingMethodId(),
-                recipe.getCategoryId(), recipe.getComment());
+                categoryService.convertToDto(recipe.getCategoryId()), recipe.getComment());
     }
 
     public List<AllRecipesDto> convertToDto(List<Recipe> recipes) {
