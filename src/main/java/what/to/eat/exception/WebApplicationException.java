@@ -3,11 +3,8 @@ package what.to.eat.exception;
 import org.springframework.http.HttpStatus;
 
 public class WebApplicationException extends RuntimeException {
-    private String message;
-    private HttpStatus status;
-
-    protected WebApplicationException() {
-    }
+    private final String message;
+    private final HttpStatus status;
 
     public WebApplicationException(String message, HttpStatus status) {
         this.message = message;
@@ -23,11 +20,4 @@ public class WebApplicationException extends RuntimeException {
         return message;
     }
 
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -11,17 +11,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class WebApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOGGER = LogManager.getLogger(WebApplicationExceptionHandler.class);
+    private static final Logger LOG = LogManager.getLogger(WebApplicationExceptionHandler.class);
 
     @ExceptionHandler(WebApplicationException.class)
     public final ResponseEntity<Object> handleAllExceptions(WebApplicationException ex) {
 
-        LOGGER.error("WebApplicationError occured: " + ex.getMessage());
+        LOG.error("WebApplicationError occured: %s", ex.getMessage());
 
         WebApplicationExceptionFormat exceptionResponse =
                 new WebApplicationExceptionFormat(ex.getMessage(), ex.getStatus());
 
-        return new ResponseEntity(exceptionResponse, ex.getStatus());
+        return new ResponseEntity<>(exceptionResponse, ex.getStatus());
 
     }
 }
