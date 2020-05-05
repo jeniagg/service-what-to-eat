@@ -10,7 +10,7 @@ public class RecipeDto {
     private String description;
     private String username;
     private String steps;
-    private Integer cookingMethodId;
+    private String cookingMethod;
     private String category;
     private String comment;
 
@@ -20,7 +20,7 @@ public class RecipeDto {
                      @JsonProperty("description") String description,
                      @JsonProperty("user") String username,
                      @JsonProperty("steps") String steps,
-                     @JsonProperty("cookingMethodId") Integer cookingMethodId,
+                     @JsonProperty("cookingMethod") String cookingMethod,
                      @JsonProperty("category") String category,
                      @JsonProperty("comment") String comment) {
         this.id = id;
@@ -28,7 +28,7 @@ public class RecipeDto {
         this.description = description;
         this.username = username;
         this.steps = steps;
-        this.cookingMethodId = cookingMethodId;
+        this.cookingMethod = cookingMethod;
         this.category = category;
         this.comment = comment;
 
@@ -65,12 +65,12 @@ public class RecipeDto {
         return category;
     }
 
-    public void setCookingMethodId(Integer cookingMethodId) {
-        this.cookingMethodId = cookingMethodId;
+    public void setCookingMethod(String cookingMethod) {
+        this.cookingMethod = cookingMethod;
     }
 
-    public Integer getCookingMethodId() {
-        return cookingMethodId;
+    public String getCookingMethod() {
+        return cookingMethod;
     }
 
     public void setSteps(String steps) {

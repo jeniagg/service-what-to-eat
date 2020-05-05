@@ -22,6 +22,9 @@ public class RecipeService {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    CookingMethodService cookingMethodService;
+
     public List<Recipe> getAllRecipeNames() {
         return recipeRepo.findAll();
     }
@@ -33,9 +36,10 @@ public class RecipeService {
     public RecipeDto convertToDto(Recipe recipe) {
         String username = usersService.getUsernameById(recipe.getUserId());
         String categoryName =  categoryService.getCategoryName(recipe.getCategoryId());
+        String cookingMethodName = cookingMethodService.getCookingMethodNameById(recipe.getCookingMethodId());
 
         return new RecipeDto(recipe.getId(), recipe.getName(), recipe.getDescription(),
-               username, recipe.getSteps(), recipe.getCookingMethodId(),
+               username, recipe.getSteps(), cookingMethodName,
                categoryName, recipe.getComment());
     }
 

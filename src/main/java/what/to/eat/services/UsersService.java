@@ -11,9 +11,9 @@ public class UsersService {
     UsersRepository usersRepository;
 
     public String getUsernameById(Integer id){
-        if (id >= 1) {
+        if (id != null && id >= 1) {
            return usersRepository.getUsernamebyId(id);
         }
-        return "";
+        return null;
     }
 }

@@ -11,6 +11,9 @@ public class CategoryService {
     CategoryRepository categoryRepo;
 
     public String getCategoryName(Integer id) {
-        return categoryRepo.getCategoryNameById(id);
+        if(id != null && id >= 1) {
+            return categoryRepo.getCategoryNameById(id);
+        }
+        return null;
     }
 }
