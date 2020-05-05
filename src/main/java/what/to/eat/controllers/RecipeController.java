@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
 import what.to.eat.entities.Recipe;
-import what.to.eat.exception.WebApplicationException;
 import what.to.eat.services.RecipeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import javax.ws.rs.WebApplicationException;
+
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class RecipeController {
 
         Recipe recipe = recipeService.getRecipeById(id);
         if (recipe == null) {
-            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+            throw new WebApplicationException("There is no such recipe id.");
         }
 
         RecipeDto recipeDto = recipeService.convertToDto(recipe);
