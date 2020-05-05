@@ -25,14 +25,32 @@ public class RecipeService {
     @Autowired
     CookingMethodService cookingMethodService;
 
-    public List<Recipe> getAllRecipeNames() {
+    /**
+     * Returns list of all recipes
+     * @return all recipes
+     */
+    public List<Recipe> getAllRecipes() {
         return recipeRepo.findAll();
     }
 
+    /**
+     * Returns specific recipe by the given id
+     * @param id - the specific recipeId
+     * @return recipe if the id is present and is bigger than 0
+     * @return null otherwise
+     */
     public Recipe getRecipeById(Integer id) {
-        return recipeRepo.getRecipeById(id);
+        if (id != null && id > 0) {
+            return recipeRepo.getRecipeById(id);
+        }
+        return null;
     }
 
+    /**
+     * Transform recipe from {@link Recipe} to {@link RecipeDto}
+     * @param recipe - the recipe to be transformed
+     * @return recipeDto - the transformed recipe
+     */
     public RecipeDto convertToDto(Recipe recipe) {
         String username = usersService.getUsernameById(recipe.getUserId());
         String categoryName =  categoryService.getCategoryName(recipe.getCategoryId());
@@ -43,6 +61,11 @@ public class RecipeService {
                categoryName, recipe.getComment());
     }
 
+    /**
+     * Transform recipes from {@link Recipe} to {@link AllRecipesDto}
+     * @param recipes - the recipes to be transformed
+     * @return recipesDto - the transformed recipes
+     */
     public List<AllRecipesDto> convertToDto(List<Recipe> recipes) {
        List<AllRecipesDto> recipesDto = new ArrayList<>();
         for (Recipe recipe : recipes) {

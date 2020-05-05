@@ -2,6 +2,9 @@ package what.to.eat.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * This class presents the fields and format the Custom Exception - WebApplicationException will have
+ */
 public class WebApplicationExceptionFormat {
 
     private String message;

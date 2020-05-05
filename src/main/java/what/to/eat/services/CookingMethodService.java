@@ -10,6 +10,13 @@ public class CookingMethodService {
     @Autowired
     CookingMethodRepository cookingMethodRepo;
 
+    /**
+     * Returns name of cooking method by specific id
+     *
+     * @param id - the specific cookingMethodId
+     * @return name of the cooking method if the cookingMethodId is present and bigger than 0
+     * @return null otherwise
+     */
     public String getCookingMethodNameById(Integer id) {
         if (id != null && id >= 1) {
             return cookingMethodRepo.getCookingMethodNameById(id);

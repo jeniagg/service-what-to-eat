@@ -10,6 +10,13 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepo;
 
+    /**
+     * Returns name of the category by specific id
+     *
+     * @param id - the given categoryId
+     * @return categoryName if the given id is present and bigger than 0
+     * @return null otherwise
+     */
     public String getCategoryName(Integer id) {
         if(id != null && id >= 1) {
             return categoryRepo.getCategoryNameById(id);

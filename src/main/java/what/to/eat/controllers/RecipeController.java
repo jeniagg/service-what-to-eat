@@ -30,7 +30,7 @@ public class RecipeController {
 
         LOGGER.info("Calling getAllRecipes() endpoint .. ");
 
-        List<Recipe> recipes = recipeService.getAllRecipeNames();
+        List<Recipe> recipes = recipeService.getAllRecipes();
 
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.convertToDto(recipes));
     }

@@ -7,6 +7,7 @@ import what.to.eat.entities.CookingMethod;
 
 @Repository
 public interface CookingMethodRepository extends CrudRepository<CookingMethod, Integer> {
+
     @Query("SELECT cm.name FROM CookingMethod cm WHERE cm.id = ?1")
     String getCookingMethodNameById(Integer id);
 }

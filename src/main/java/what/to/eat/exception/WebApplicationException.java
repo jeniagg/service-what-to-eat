@@ -2,6 +2,9 @@ package what.to.eat.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * This class presents the custom exception for What to eat API
+ */
 public class WebApplicationException extends RuntimeException {
     private final String message;
     private final HttpStatus status;
