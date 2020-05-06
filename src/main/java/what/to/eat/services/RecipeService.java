@@ -67,7 +67,7 @@ public class RecipeService {
      * @return recipesDto - the transformed recipes
      */
     public List<AllRecipesDto> convertToDto(List<Recipe> recipes) {
-       List<AllRecipesDto> recipesDto = new ArrayList<>();
+        List<AllRecipesDto> recipesDto = new ArrayList<>();
         for (Recipe recipe : recipes) {
             recipesDto.add(new AllRecipesDto(recipe.getId(), recipe.getName()));
         }

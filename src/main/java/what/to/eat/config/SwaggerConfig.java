@@ -14,6 +14,7 @@ public class SwaggerConfig {
         return new OpenAPI()
             .components(new Components())
             .info(new Info().title("What to eat API").description(
-                "You don't know what to eat? We are here to help you decide!"));
+                "You don't know what to eat? We are here to help you decide!")
+                    .version("1.0"));
     }
 }
