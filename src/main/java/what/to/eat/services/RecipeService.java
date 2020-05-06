@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
+import what.to.eat.entities.CategoryEnum;
 import what.to.eat.entities.Recipe;
 import what.to.eat.repositories.RecipeRepository;
 
@@ -124,7 +125,7 @@ public class RecipeService {
     public Recipe convertToEntity(RecipeDto recipeDto) {
         Recipe recipe = new Recipe();
 
-        Integer categoryId = categoryService.getCategoryId(recipeDto.getCategory());
+        Integer categoryId = categoryService.getCategoryId(recipeDto.getCategory().name());
         Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod());
         Integer userId = usersService.getIdByUsername(recipeDto.getUsername());
 
@@ -151,7 +152,7 @@ public class RecipeService {
 
         return new RecipeDto(recipe.getId(), recipe.getName(), recipe.getDescription(),
                username, recipe.getSteps(), cookingMethodName,
-               categoryName, recipe.getComment());
+               CategoryEnum.valueOf(categoryName), recipe.getComment());
     }
 
     /**

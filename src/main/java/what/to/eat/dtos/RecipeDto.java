@@ -3,6 +3,7 @@ package what.to.eat.dtos;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import what.to.eat.entities.CategoryEnum;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeDto {
@@ -13,7 +14,7 @@ public class RecipeDto {
     private String username;
     private String steps;
     private String cookingMethod;
-    private String category;
+    private CategoryEnum category;
     private String comment;
 
     @JsonCreator
@@ -23,7 +24,7 @@ public class RecipeDto {
                      @JsonProperty("username") String username,
                      @JsonProperty("steps") String steps,
                      @JsonProperty("cookingMethod") String cookingMethod,
-                     @JsonProperty("category") String category,
+                     @JsonProperty("category") CategoryEnum category,
                      @JsonProperty("comment") String comment) {
         this.id = id;
         this.name = name;
@@ -59,11 +60,11 @@ public class RecipeDto {
         return comment;
     }
 
-    public void setCategoryId(String category) {
+    public void setCategory(CategoryEnum category) {
         this.category = category;
     }
 
-    public String getCategory() {
+    public CategoryEnum getCategory() {
         return category;
     }
 

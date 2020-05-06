@@ -14,9 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
+import what.to.eat.entities.CategoryEnum;
 import what.to.eat.entities.Recipe;
 import what.to.eat.exception.WebApplicationException;
-import what.to.eat.exception.WebApplicationExceptionFormat;
+import what.to.eat.services.CategoryService;
 import what.to.eat.services.RecipeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,9 @@ public class RecipeController {
 
     @Autowired
     private RecipeService recipeService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * Retrieve all existing recipes filtered by categoryName and cookingMethodName
@@ -102,13 +106,20 @@ public class RecipeController {
     @Operation(summary = "Create a recipe.", description = "Create new recipe.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created"),
-            @ApiResponse(responseCode = "400", description = "Mandatory value is missing from the body"),
-            @ApiResponse(responseCode = "415", description = "Missing body")
+            @ApiResponse(responseCode = "400", description = "Mandatory value is missing from the body or" +
+                    " not allowed value is passed for some of the properties", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "415", description = "Missing body", content = @Content(schema = @Schema()))
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecipeDto> createRecipe( @RequestBody RecipeDto recipeDto){
 
         LOGGER.info("Calling create specific recipe endpoint .. ");
+
+        if (!CategoryEnum.isValidCategory(recipeDto.getCategory().name())
+                || categoryService.getCategoryId(recipeDto.getCategory().name()) == null) {
+            throw new WebApplicationException("There is no such category.", HttpStatus.BAD_REQUEST);
+        }
+
         Recipe recipe = recipeService.convertToEntity(recipeDto);
         Recipe newRecipe = recipeService.saveRecipe(recipe);
 

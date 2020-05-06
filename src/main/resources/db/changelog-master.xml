@@ -7,4 +7,5 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="/db/scripts/create-tables.sql"/>
+    <include file="/db/scripts/populate-category-table.sql"/>
 </databaseChangeLog>
