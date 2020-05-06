@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.AllRecipesDto;
@@ -27,7 +28,7 @@ import java.util.List;
  * This class is responsible for all recipe related endpoints.
  */
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping(value = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Recipe Controller", description = "recipe operations controller")
 public class RecipeController {
 
@@ -37,23 +38,29 @@ public class RecipeController {
     private RecipeService recipeService;
 
     /**
-     * Retrieve all existing recipes filtered by categoryName
+     * Retrieve all existing recipes filtered by categoryName and cookingMethodName
      * @param categoryName - the name of the category used for filtering
+     * @param cookingMethodName - the name of the cooking method used for filtering
      * @return array with all existing recipes
      */
     @Operation(summary = "Retrieve all recipes.", description = "Retrieve all existing recipes." +
-            " They can be filtered by category. If empty value is passed, recipes from all categories are returned.")
+            " They can be filtered by category and/or cooking method. If empty values are passed," +
+            " recipes from all categories/cooking methods are returned.")
     @ApiResponses( value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation")
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "400", description = "Query parameter is missing.",
+            content = @Content(schema = @Schema()))
     })
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(value = "/")
     public ResponseEntity<List<AllRecipesDto>> getAllRecipes(
             @Parameter(description = "categoryName", allowEmptyValue = true)
-            @RequestParam("category") String categoryName) {
+            @RequestParam("category") String categoryName,
+            @Parameter(description = "cookingMethodName", allowEmptyValue = true)
+            @RequestParam("cookingMethod") String cookingMethodName) {
 
         LOGGER.info("Calling getAllRecipes() endpoint .. ");
 
-        List<Recipe> recipes = recipeService.getAllRecipes(categoryName);
+        List<Recipe> recipes = recipeService.getAllRecipes(categoryName, cookingMethodName);
 
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.convertToDto(recipes));
     }
@@ -69,9 +76,9 @@ public class RecipeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "404", description = "Recipe with this id is not found",
-            content = @Content(schema = @Schema(implementation = WebApplicationExceptionFormat.class)))
+            content = @Content(schema = @Schema()))
     })
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<RecipeDto> getRecipe(
             @Parameter(description = "recipeId", required = true) @PathVariable("id") Integer id) {
 

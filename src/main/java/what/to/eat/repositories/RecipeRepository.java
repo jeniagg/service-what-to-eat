@@ -18,4 +18,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 
     @Query("SELECT r FROM Recipe r WHERE categoryId = ?1")
     List<Recipe> getAllRecipesByCategoryId(Integer categoryId);
+
+    @Query("SELECT r FROM Recipe r WHERE cookingMethodId = ?1")
+    List<Recipe> getAllRecipesByCookingMethodId(Integer cookingMethodId);
+
+    @Query("SELECT r FROM Recipe r WHERE categoryId = ?1 AND cookingMethodId = ?2")
+    List<Recipe> getAllRecipesByCategoryIdAndCookingMethodId(Integer categoryId, Integer cookingMethodId);
 }

@@ -1,5 +1,6 @@
 package what.to.eat.services;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.repositories.CookingMethodRepository;
@@ -22,5 +23,19 @@ public class CookingMethodService {
             return cookingMethodRepo.getCookingMethodNameById(id);
         }
         return null;
+    }
+
+    /**
+     * Returns id of cooking method by specific name
+     *
+     * @param cookingMethodName - the specific cookingMethodName
+     * @return id of the cooking method if the cookingMethodName is present and not null
+     * @return null otherwise
+     */
+    public Integer getCookingMethodIdbyName(String cookingMethodName) {
+        if (StringUtils.isBlank(cookingMethodName)) {
+            return null;
+        }
+        return cookingMethodRepo.getCookingMethodIdbyName(cookingMethodName);
     }
 }

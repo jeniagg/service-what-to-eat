@@ -1,5 +1,6 @@
 package what.to.eat.services;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.dtos.AllRecipesDto;
@@ -26,18 +27,57 @@ public class RecipeService {
     CookingMethodService cookingMethodService;
 
     /**
-     * Returns list of all recipes filtered by category
-     * If the category is not passed, recipes from all categories are returned
+     * Returns list of all recipes filtered by category and cooking method
+     * If the category and/or cooking method is not passed,
+     * recipes from all categories and cooking methods are returned
      *
      * @param categoryName - name of the category used for filtering
+     * @param cookingMethodName - name of the cooking method used for filtering
      * @return all recipes
      */
-    public List<Recipe> getAllRecipes(String categoryName) {
-        if (categoryName == null || categoryName.isEmpty()) {
+    public List<Recipe> getAllRecipes(String categoryName, String cookingMethodName) {
+        if (StringUtils.isBlank(categoryName) && StringUtils.isBlank(cookingMethodName)) {
             return recipeRepo.findAll();
         }
+        if (StringUtils.isBlank(categoryName)) {
+            return getAllRecipesByCookingMethod(cookingMethodName);
+        }
+        if (StringUtils.isBlank(cookingMethodName)) {
+            return getAllRecipesByCategory(categoryName);
+        }
+        return getAllRecipesByCategoryAndCookingMethod(categoryName, cookingMethodName);
+    }
+
+    /**
+     * Retrieve recipes filtered by category
+     * @param categoryName - name of the category used for filtering
+     * @return all recipes from the specified category
+     */
+    private List<Recipe> getAllRecipesByCategory(String categoryName) {
         Integer categoryId = categoryService.getCategoryId(categoryName);
-        return getAllRecipesByCategory(categoryId);
+        return recipeRepo.getAllRecipesByCategoryId(categoryId);
+    }
+
+    /**
+     * Retrieve recipes filtered by cooking method
+     * @param cookingMethodName - name of the cooking method used for filtering
+     * @return all recipes from the specified cooking method
+     */
+    private List<Recipe> getAllRecipesByCookingMethod(String cookingMethodName) {
+        Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(cookingMethodName);
+        return recipeRepo.getAllRecipesByCookingMethodId(cookingMethodId);
+    }
+
+    /**
+     * Retrieve recipes filtered by category and cooking method
+     * @param categoryName - name of the category used for filtering
+     * @param cookingMethodName - name of the cooking method used for filtering
+     * @return all recipes from the specified category and cooking method
+     */
+    private List<Recipe> getAllRecipesByCategoryAndCookingMethod(String categoryName, String cookingMethodName) {
+        Integer categoryId = categoryService.getCategoryId(categoryName);
+        Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(cookingMethodName);
+        return recipeRepo.getAllRecipesByCategoryIdAndCookingMethodId(categoryId, cookingMethodId);
     }
 
     /**

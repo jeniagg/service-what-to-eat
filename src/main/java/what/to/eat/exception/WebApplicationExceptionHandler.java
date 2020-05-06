@@ -15,7 +15,7 @@ public class WebApplicationExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(WebApplicationException.class)
     public final ResponseEntity<Object> handleAllExceptions(WebApplicationException ex) {
 
-        LOG.error("WebApplicationError occured: %s", ex.getMessage());
+        LOG.error("WebApplicationError occurred {}", ex.getMessage());
 
         WebApplicationExceptionFormat exceptionResponse =
                 new WebApplicationExceptionFormat(ex.getMessage(), ex.getStatus());

@@ -10,4 +10,7 @@ public interface CookingMethodRepository extends CrudRepository<CookingMethod, I
 
     @Query("SELECT cm.name FROM CookingMethod cm WHERE cm.id = ?1")
     String getCookingMethodNameById(Integer id);
+
+    @Query("SELECT cm.id FROM CookingMethod cm WHERE cm.name = ?1")
+    Integer getCookingMethodIdbyName(String name);
 }
