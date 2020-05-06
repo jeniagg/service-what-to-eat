@@ -8,10 +8,12 @@ import what.to.eat.dtos.RecipeDto;
 import what.to.eat.entities.Recipe;
 import what.to.eat.repositories.RecipeRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class RecipeService {
 
     @Autowired
@@ -103,6 +105,38 @@ public class RecipeService {
             return recipeRepo.getAllRecipesByCategoryId(categoryId);
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * Saves the given recipe to the database
+     * @param recipe - the recipe to be saved
+     * @return saved recipe
+     */
+    public Recipe saveRecipe(Recipe recipe) {
+        return recipeRepo.save(recipe);
+    }
+
+    /**
+     * Transform recipe from {@link RecipeDto} to {@link Recipe}
+     * @param recipeDto - the recipeDto to be transformed
+     * @return recipe - the transformed recipe
+     */
+    public Recipe convertToEntity(RecipeDto recipeDto) {
+        Recipe recipe = new Recipe();
+
+        Integer categoryId = categoryService.getCategoryId(recipeDto.getCategory());
+        Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod());
+        Integer userId = usersService.getIdByUsername(recipeDto.getUsername());
+
+        recipe.setCategoryId(categoryId);
+        recipe.setComment(recipeDto.getComment());
+        recipe.setCookingMethodId(cookingMethodId);
+        recipe.setDescription(recipeDto.getDescription());
+        recipe.setName(recipeDto.getName());
+        recipe.setSteps(recipeDto.getSteps());
+        recipe.setUserId(userId);
+
+        return recipe;
     }
 
     /**

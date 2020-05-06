@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.repositories.CategoryRepository;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class CategoryService {
 
     @Autowired

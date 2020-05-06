@@ -51,7 +51,7 @@ public class RecipeController {
             @ApiResponse(responseCode = "400", description = "Query parameter is missing.",
             content = @Content(schema = @Schema()))
     })
-    @GetMapping(value = "/")
+    @GetMapping
     public ResponseEntity<List<AllRecipesDto>> getAllRecipes(
             @Parameter(description = "categoryName", allowEmptyValue = true)
             @RequestParam("category") String categoryName,
@@ -92,6 +92,30 @@ public class RecipeController {
         RecipeDto recipeDto = recipeService.convertToDto(recipe);
 
         return ResponseEntity.status(HttpStatus.OK).body(recipeDto);
+    }
+
+    /**
+     * Create new recipe with the given body
+     * @param recipeDto - the body of the recipe to be saved
+     * @return the new recipe
+     */
+    @Operation(summary = "Create a recipe.", description = "Create new recipe.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created"),
+            @ApiResponse(responseCode = "400", description = "Mandatory value is missing from the body"),
+            @ApiResponse(responseCode = "415", description = "Missing body")
+    })
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecipeDto> createRecipe( @RequestBody RecipeDto recipeDto){
+
+        LOGGER.info("Calling create specific recipe endpoint .. ");
+        Recipe recipe = recipeService.convertToEntity(recipeDto);
+        Recipe newRecipe = recipeService.saveRecipe(recipe);
+
+        LOGGER.info("The new recipe was successfully created");
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(recipeService.convertToDto(newRecipe));
     }
 
 }

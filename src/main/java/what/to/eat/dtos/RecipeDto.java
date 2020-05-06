@@ -20,7 +20,7 @@ public class RecipeDto {
     public RecipeDto(@JsonProperty("id") int id,
                      @JsonProperty(value = "name", required = true) String name,
                      @JsonProperty("description") String description,
-                     @JsonProperty("user") String username,
+                     @JsonProperty("username") String username,
                      @JsonProperty("steps") String steps,
                      @JsonProperty("cookingMethod") String cookingMethod,
                      @JsonProperty("category") String category,

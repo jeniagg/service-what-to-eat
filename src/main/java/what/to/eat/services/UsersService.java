@@ -1,10 +1,14 @@
 package what.to.eat.services;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.repositories.UsersRepository;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class UsersService {
 
     @Autowired
@@ -22,5 +26,19 @@ public class UsersService {
             return usersRepository.getUsernamebyId(id);
         }
         return null;
+    }
+
+    /***
+     * Returns userId by the given username
+     *
+     * @param username - the given username
+     * @return userId if username is not empty or null
+     * @return null otherwise
+     */
+    public Integer getIdByUsername(String username) {
+        if (StringUtils.isBlank(username)) {
+            return null;
+        }
+        return usersRepository.getIdByUsername(username);
     }
 }
