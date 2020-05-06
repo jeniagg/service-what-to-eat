@@ -10,4 +10,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
     @Query("SELECT c.name FROM Category c WHERE id = ?1")
     String getCategoryNameById(Integer id);
+
+    @Query("SELECT c.id FROM Category c WHERE name = ?1")
+    Integer getCategoryIdByName(String name);
 }

@@ -23,4 +23,18 @@ public class CategoryService {
         }
         return null;
     }
+
+    /**
+     * Returns id of the category by specific name
+     * @param categoryName - the given categoryName
+     * @return the id of the category if the name is not empty or null
+     * @return null otherwise
+     */
+    public Integer getCategoryId(String categoryName) {
+        if (categoryName == null || categoryName.isEmpty()) {
+            return null;
+        }
+        return categoryRepo.getCategoryIdByName(categoryName);
+    }
+
 }

@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
 import what.to.eat.entities.Recipe;
@@ -40,19 +37,23 @@ public class RecipeController {
     private RecipeService recipeService;
 
     /**
-     * Retrieve all existing recipes
+     * Retrieve all existing recipes filtered by categoryName
+     * @param categoryName - the name of the category used for filtering
      * @return array with all existing recipes
      */
-    @Operation(summary = "Retrieve all recipes.", description = "Retrieve all existing recipes.")
+    @Operation(summary = "Retrieve all recipes.", description = "Retrieve all existing recipes." +
+            " They can be filtered by category. If empty value is passed, recipes from all categories are returned.")
     @ApiResponses( value = {
             @ApiResponse(responseCode = "200", description = "Successful operation")
     })
     @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<List<AllRecipesDto>> getAllRecipes() {
+    public ResponseEntity<List<AllRecipesDto>> getAllRecipes(
+            @Parameter(description = "categoryName", allowEmptyValue = true)
+            @RequestParam("category") String categoryName) {
 
         LOGGER.info("Calling getAllRecipes() endpoint .. ");
 
-        List<Recipe> recipes = recipeService.getAllRecipes();
+        List<Recipe> recipes = recipeService.getAllRecipes(categoryName);
 
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.convertToDto(recipes));
     }
