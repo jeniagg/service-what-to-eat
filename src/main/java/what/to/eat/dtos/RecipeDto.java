@@ -1,8 +1,10 @@
 package what.to.eat.dtos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeDto {
 
     private Integer id;
@@ -16,7 +18,7 @@ public class RecipeDto {
 
     @JsonCreator
     public RecipeDto(@JsonProperty("id") int id,
-                     @JsonProperty("name") String name,
+                     @JsonProperty(value = "name", required = true) String name,
                      @JsonProperty("description") String description,
                      @JsonProperty("user") String username,
                      @JsonProperty("steps") String steps,
