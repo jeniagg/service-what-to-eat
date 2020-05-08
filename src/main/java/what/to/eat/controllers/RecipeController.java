@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
 import what.to.eat.entities.CategoryEnum;
+import what.to.eat.entities.CookingMethodEnum;
 import what.to.eat.entities.Recipe;
 import what.to.eat.exception.WebApplicationException;
 import what.to.eat.services.CategoryService;
+import what.to.eat.services.CookingMethodService;
 import what.to.eat.services.RecipeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +42,9 @@ public class RecipeController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CookingMethodService cookingMethodService;
 
     /**
      * Retrieve all existing recipes filtered by categoryName and cookingMethodName
@@ -115,9 +120,16 @@ public class RecipeController {
 
         LOGGER.info("Calling create specific recipe endpoint .. ");
 
-        if (!CategoryEnum.isValidCategory(recipeDto.getCategory().name())
-                || categoryService.getCategoryId(recipeDto.getCategory().name()) == null) {
+        if ( (recipeDto.getCategory() != null) &&
+                (!CategoryEnum.isValidCategory(recipeDto.getCategory().name())
+                || categoryService.getCategoryId(recipeDto.getCategory().name()) == null)) {
             throw new WebApplicationException("There is no such category.", HttpStatus.BAD_REQUEST);
+        }
+
+        if ( (recipeDto.getCookingMethod() != null) &&
+                (!CookingMethodEnum.isValidCookingMethod(recipeDto.getCookingMethod().name())
+                || cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name()) == null)) {
+            throw new WebApplicationException("There is no such cooking method.", HttpStatus.BAD_REQUEST);
         }
 
         Recipe recipe = recipeService.convertToEntity(recipeDto);

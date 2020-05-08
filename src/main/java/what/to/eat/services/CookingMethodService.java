@@ -39,6 +39,6 @@ public class CookingMethodService {
         if (StringUtils.isBlank(cookingMethodName)) {
             return null;
         }
-        return cookingMethodRepo.getCookingMethodIdbyName(cookingMethodName);
+        return cookingMethodRepo.getCookingMethodIdbyName(cookingMethodName.toUpperCase());
     }
 }

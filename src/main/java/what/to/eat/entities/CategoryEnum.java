@@ -11,9 +11,9 @@ public enum CategoryEnum {
      * @return true if the categoryName is a valid one
      */
     public static boolean isValidCategory(String name) {
-        if (CategoryEnum.valueOf(name.toUpperCase()) != null) {
-            return true;
+        if (name != null) {
+            return CategoryEnum.valueOf(name.toUpperCase()) != null;
         }
-        return false;
+        return true;
     }
 }

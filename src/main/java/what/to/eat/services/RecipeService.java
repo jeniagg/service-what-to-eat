@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
 import what.to.eat.entities.CategoryEnum;
+import what.to.eat.entities.CookingMethodEnum;
 import what.to.eat.entities.Recipe;
 import what.to.eat.repositories.RecipeRepository;
 
@@ -124,11 +125,18 @@ public class RecipeService {
      */
     public Recipe convertToEntity(RecipeDto recipeDto) {
         Recipe recipe = new Recipe();
-
-        Integer categoryId = categoryService.getCategoryId(recipeDto.getCategory().name());
-        Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod());
+        Integer categoryId = null;
+        Integer cookingMethodId = null;
         Integer userId = usersService.getIdByUsername(recipeDto.getUsername());
 
+        if (recipeDto.getCategory() != null) {
+            categoryId = categoryService.getCategoryId(recipeDto.getCategory().name());
+        }
+
+        if (recipeDto.getCookingMethod() != null) {
+            cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name());
+        }
+        
         recipe.setCategoryId(categoryId);
         recipe.setComment(recipeDto.getComment());
         recipe.setCookingMethodId(cookingMethodId);
@@ -147,12 +155,19 @@ public class RecipeService {
      */
     public RecipeDto convertToDto(Recipe recipe) {
         String username = usersService.getUsernameById(recipe.getUserId());
-        String categoryName =  categoryService.getCategoryName(recipe.getCategoryId());
-        String cookingMethodName = cookingMethodService.getCookingMethodNameById(recipe.getCookingMethodId());
+        CategoryEnum category =  null;
+        CookingMethodEnum cookingMethod = null;
+
+        if (recipe.getCategoryId() != null) {
+            category = CategoryEnum.valueOf(categoryService.getCategoryName(recipe.getCategoryId()));
+        }
+        if (recipe.getCookingMethodId() != null) {
+            cookingMethod = CookingMethodEnum.valueOf(cookingMethodService.getCookingMethodNameById(recipe.getCookingMethodId()));
+        }
 
         return new RecipeDto(recipe.getId(), recipe.getName(), recipe.getDescription(),
-               username, recipe.getSteps(), cookingMethodName,
-               CategoryEnum.valueOf(categoryName), recipe.getComment());
+               username, recipe.getSteps(), cookingMethod,
+               category, recipe.getComment());
     }
 
     /**

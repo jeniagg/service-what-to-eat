@@ -37,7 +37,7 @@ public class CategoryService {
         if (categoryName == null || categoryName.isEmpty()) {
             return null;
         }
-        return categoryRepo.getCategoryIdByName(categoryName);
+        return categoryRepo.getCategoryIdByName(categoryName.toUpperCase());
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import what.to.eat.entities.CategoryEnum;
+import what.to.eat.entities.CookingMethodEnum;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeDto {
@@ -13,7 +14,7 @@ public class RecipeDto {
     private String description;
     private String username;
     private String steps;
-    private String cookingMethod;
+    private CookingMethodEnum cookingMethod;
     private CategoryEnum category;
     private String comment;
 
@@ -23,7 +24,7 @@ public class RecipeDto {
                      @JsonProperty("description") String description,
                      @JsonProperty("username") String username,
                      @JsonProperty("steps") String steps,
-                     @JsonProperty("cookingMethod") String cookingMethod,
+                     @JsonProperty("cookingMethod") CookingMethodEnum cookingMethod,
                      @JsonProperty("category") CategoryEnum category,
                      @JsonProperty("comment") String comment) {
         this.id = id;
@@ -68,11 +69,11 @@ public class RecipeDto {
         return category;
     }
 
-    public void setCookingMethod(String cookingMethod) {
+    public void setCookingMethod(CookingMethodEnum cookingMethod) {
         this.cookingMethod = cookingMethod;
     }
 
-    public String getCookingMethod() {
+    public CookingMethodEnum getCookingMethod() {
         return cookingMethod;
     }
 
