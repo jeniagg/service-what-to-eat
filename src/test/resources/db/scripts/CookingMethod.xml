@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <cooking_method id="1"  name="BAKING" />
+    <cooking_method id="2"  name="FRYING" />
+    <cooking_method id="3"  name="ROASTING" />
+    <cooking_method id="4"  name="GRILLING" />
+    <cooking_method id="5"  name="STEAMING" />
+    <cooking_method id="6"  name="POACHING" />
+    <cooking_method id="7"  name="SIMMERING" />
+    <cooking_method id="8"  name="BROILING" />
+    <cooking_method id="9"  name="BLANCHING" />
+    <cooking_method id="10" name="BRAISING" />
+    <cooking_method id="11" name="STEWING" />
+</dataset>
