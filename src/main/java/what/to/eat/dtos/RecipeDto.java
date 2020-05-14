@@ -3,8 +3,6 @@ package what.to.eat.dtos;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import what.to.eat.entities.CategoryEnum;
-import what.to.eat.entities.CookingMethodEnum;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeDto {

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.RecipeDto;
-import what.to.eat.entities.CategoryEnum;
-import what.to.eat.entities.CookingMethodEnum;
+import what.to.eat.dtos.CategoryEnum;
+import what.to.eat.dtos.CookingMethodEnum;
 import what.to.eat.entities.Recipe;
 import what.to.eat.repositories.RecipeRepository;
 

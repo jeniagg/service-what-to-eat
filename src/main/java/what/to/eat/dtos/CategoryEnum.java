@@ -1,4 +1,4 @@
-package what.to.eat.entities;
+package what.to.eat.dtos;
 
 public enum CategoryEnum {
     APPETIZER, SALAD, ENTREE, MAIN, DESSERT, BEVERAGE;

@@ -1,4 +1,4 @@
-package what.to.eat.entities;
+package what.to.eat.dtos;
 
 public enum CookingMethodEnum {
     BAKING, FRYING, ROASTING, GRILLING, STEAMING, POACHING, SIMMERING, BROILING, BLANCHING, BRAISING, STEWING;
