@@ -136,7 +136,7 @@ public class RecipeService {
         if (recipeDto.getCookingMethod() != null) {
             cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name());
         }
-        
+
         recipe.setCategoryId(categoryId);
         recipe.setComment(recipeDto.getComment());
         recipe.setCookingMethodId(cookingMethodId);

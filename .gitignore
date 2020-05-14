@@ -9,3 +9,6 @@ target/
 .project
 .classpath
 .metadata
+*.lck
+*.script
+WhatToEatDB.properties
