@@ -1,5 +1,6 @@
 package what.to.eat.services;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import what.to.eat.repositories.CategoryRepository;
@@ -34,7 +35,7 @@ public class CategoryService {
      * @return null otherwise
      */
     public Integer getCategoryId(String categoryName) {
-        if (categoryName == null || categoryName.isEmpty()) {
+        if (StringUtils.isBlank(categoryName)) {
             return null;
         }
         return categoryRepo.getCategoryIdByName(categoryName.toUpperCase());

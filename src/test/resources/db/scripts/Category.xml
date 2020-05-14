@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <category id="1" name="SALAD" />
+    <category id="1" name="APPETIZER" />
+    <category id="2" name="SALAD" />
+    <category id="3" name="ENTREE" />
+    <category id="4" name="MAIN" />
+    <category id="5" name="DESSERT" />
+    <category id="6" name="BEVERAGE" />
 </dataset>
