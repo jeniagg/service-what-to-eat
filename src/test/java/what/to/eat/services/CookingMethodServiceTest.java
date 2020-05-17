@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * This class is responsible for testing CookingMethodService
+ */
 public class CookingMethodServiceTest extends ServiceTest {
 
     @Autowired

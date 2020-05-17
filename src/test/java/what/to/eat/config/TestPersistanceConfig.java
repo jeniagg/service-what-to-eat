@@ -9,6 +9,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import what.to.eat.services.CategoryService;
 import what.to.eat.services.CookingMethodService;
+import what.to.eat.services.UsersService;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -55,5 +56,10 @@ public class TestPersistanceConfig {
     @Bean
     public CookingMethodService cookingMethodService() {
         return new CookingMethodService();
+    }
+
+    @Bean
+    public UsersService usersService() {
+        return new UsersService();
     }
 }
