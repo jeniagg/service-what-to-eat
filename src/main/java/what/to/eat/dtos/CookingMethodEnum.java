@@ -12,7 +12,12 @@ public enum CookingMethodEnum {
      */
     public static boolean isValidCookingMethod(String name) {
         if (name != null) {
-            return CookingMethodEnum.valueOf(name.toUpperCase()) != null;
+            try {
+                CookingMethodEnum.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+            return true;
         }
         return true;
     }
