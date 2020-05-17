@@ -12,7 +12,12 @@ public enum CategoryEnum {
      */
     public static boolean isValidCategory(String name) {
         if (name != null) {
-            return CategoryEnum.valueOf(name.toUpperCase()) != null;
+            try {
+                CategoryEnum.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+            return  true;
         }
         return true;
     }
