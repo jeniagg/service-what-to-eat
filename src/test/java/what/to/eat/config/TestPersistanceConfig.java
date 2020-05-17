@@ -4,17 +4,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import what.to.eat.services.CategoryService;
 import what.to.eat.services.CookingMethodService;
+import what.to.eat.services.RecipeService;
 import what.to.eat.services.UsersService;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories({"what.to.eat.repositories"})
 public class TestPersistanceConfig {
 
@@ -48,6 +54,14 @@ public class TestPersistanceConfig {
         return em;
     }
 
+
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+        return transactionManager;
+    }
+
     @Bean
     public CategoryService categoryService() {
         return new CategoryService();
@@ -61,5 +75,10 @@ public class TestPersistanceConfig {
     @Bean
     public UsersService usersService() {
         return new UsersService();
+    }
+
+    @Bean
+    public RecipeService recipeService() {
+        return new RecipeService();
     }
 }

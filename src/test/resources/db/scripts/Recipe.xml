@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <recipe id="1" name="testRecipe" description = "Recipe for testing purposes"
+            user_id = "1" steps = "Some steps for the recipe" cooking_method_id = "1"
+            category_id = "4" comment = "Additional comment for the recipe"/>
+
+    <recipe id="2" name = "testRecipe2" cooking_method_id = "1"/>
+    <recipe id="3" name = "testRecipe3" category_id = "4" />
+    <recipe id="4" name = "testRecipe4" cooking_method_id = "2"  category_id = "3"/>
+    <recipe id="5" name = "testRecipe5" cooking_method_id = "3"  category_id = "3"/>
+    <recipe id="6" name = "testRecipe6" cooking_method_id = "2"  category_id = "4"/>
+
+</dataset>

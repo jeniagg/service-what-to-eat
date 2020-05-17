@@ -57,7 +57,7 @@ public class RecipeService {
      * @param categoryName - name of the category used for filtering
      * @return all recipes from the specified category
      */
-    private List<Recipe> getAllRecipesByCategory(String categoryName) {
+    protected List<Recipe> getAllRecipesByCategory(String categoryName) {
         Integer categoryId = categoryService.getCategoryId(categoryName);
         return recipeRepo.getAllRecipesByCategoryId(categoryId);
     }
@@ -67,7 +67,7 @@ public class RecipeService {
      * @param cookingMethodName - name of the cooking method used for filtering
      * @return all recipes from the specified cooking method
      */
-    private List<Recipe> getAllRecipesByCookingMethod(String cookingMethodName) {
+    protected List<Recipe> getAllRecipesByCookingMethod(String cookingMethodName) {
         Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(cookingMethodName);
         return recipeRepo.getAllRecipesByCookingMethodId(cookingMethodId);
     }
@@ -78,7 +78,7 @@ public class RecipeService {
      * @param cookingMethodName - name of the cooking method used for filtering
      * @return all recipes from the specified category and cooking method
      */
-    private List<Recipe> getAllRecipesByCategoryAndCookingMethod(String categoryName, String cookingMethodName) {
+    protected List<Recipe> getAllRecipesByCategoryAndCookingMethod(String categoryName, String cookingMethodName) {
         Integer categoryId = categoryService.getCategoryId(categoryName);
         Integer cookingMethodId = cookingMethodService.getCookingMethodIdbyName(cookingMethodName);
         return recipeRepo.getAllRecipesByCategoryIdAndCookingMethodId(categoryId, cookingMethodId);
@@ -95,18 +95,6 @@ public class RecipeService {
             return recipeRepo.getRecipeById(id);
         }
         return null;
-    }
-
-    /**
-     * Retrieve all recipes from specific category
-     * @param categoryId - id of the category
-     * @return All recipes from the specified category
-     */
-    public List<Recipe> getAllRecipesByCategory(Integer categoryId) {
-        if (categoryId != null && categoryId > 0) {
-            return recipeRepo.getAllRecipesByCategoryId(categoryId);
-        }
-        return new ArrayList<>();
     }
 
     /**
