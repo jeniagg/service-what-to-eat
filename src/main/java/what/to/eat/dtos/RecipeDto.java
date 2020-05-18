@@ -17,7 +17,7 @@ public class RecipeDto {
     private String comment;
 
     @JsonCreator
-    public RecipeDto(@JsonProperty("id") int id,
+    public RecipeDto(@JsonProperty("id") Integer id,
                      @JsonProperty(value = "name", required = true) String name,
                      @JsonProperty("description") String description,
                      @JsonProperty("username") String username,
@@ -47,7 +47,7 @@ public class RecipeDto {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 

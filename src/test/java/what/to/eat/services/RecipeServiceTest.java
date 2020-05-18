@@ -4,6 +4,11 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import what.to.eat.dtos.AllRecipesDto;
+import what.to.eat.dtos.CategoryEnum;
+import what.to.eat.dtos.CookingMethodEnum;
+import what.to.eat.dtos.RecipeDto;
+import what.to.eat.entities.Category;
 import what.to.eat.entities.Recipe;
 
 import java.util.ArrayList;
@@ -16,6 +21,15 @@ public class RecipeServiceTest extends ServiceTest {
 
     @Autowired
     RecipeService recipeService;
+
+    @Autowired
+    UsersService usersService;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    CookingMethodService cookingMethodService;
 
     @Test
     @DatabaseSetup("/db/scripts/Category.xml")
@@ -148,6 +162,95 @@ public class RecipeServiceTest extends ServiceTest {
         Assert.assertEquals(recipe.getSteps(), savedRecipe.getSteps());
         Assert.assertEquals(recipe.getUserId(), savedRecipe.getUserId());
 
+    }
+
+    @Test
+    @DatabaseSetup("/db/scripts/Users.xml")
+    @DatabaseSetup("/db/scripts/Category.xml")
+    @DatabaseSetup("/db/scripts/CookingMethod.xml")
+    public void convertToEntityTest() {
+        RecipeDto recipeDto = new RecipeDto(1, "testDto", "descr", "TestUser","steps",
+                CookingMethodEnum.valueOf("BAKING"), CategoryEnum.valueOf("MAIN"), "comment");
+        Recipe recipe = recipeService.convertToEntity(recipeDto);
+
+        Assert.assertEquals(recipeDto.getName(), recipe.getName());
+        Assert.assertEquals(recipeDto.getSteps(), recipe.getSteps());
+        Assert.assertEquals(recipeDto.getDescription(), recipe.getDescription());
+        Assert.assertEquals(recipeDto.getComment(), recipe.getComment());
+        Assert.assertEquals(recipeDto.getCookingMethod().name(),
+                cookingMethodService.getCookingMethodNameById(recipe.getCookingMethodId()));
+        Assert.assertEquals(recipeDto.getCategory().name(), categoryService.getCategoryName(recipe.getCategoryId()));
+        Assert.assertEquals(recipeDto.getUsername(), usersService.getUsernameById(recipe.getUserId()));
+    }
+
+    @Test
+    public void convertToEntityMandatoryFieldsOnlyTest() {
+        RecipeDto recipeDto = new RecipeDto(null, "testDto", null, null,null,
+                null, null, null);
+        Recipe recipe = recipeService.convertToEntity(recipeDto);
+
+        Assert.assertEquals(recipeDto.getName(), recipe.getName());
+        Assert.assertNull(recipe.getUserId());
+        Assert.assertNull(recipe.getSteps());
+        Assert.assertNull(recipe.getDescription());
+        Assert.assertNull(recipe.getComment());
+        Assert.assertNull(recipe.getCookingMethodId());
+        Assert.assertNull(recipe.getCategoryId());
+    }
+
+    @Test
+    @DatabaseSetup("/db/scripts/Users.xml")
+    @DatabaseSetup("/db/scripts/Category.xml")
+    @DatabaseSetup("/db/scripts/CookingMethod.xml")
+    public void convertToDtoTest() {
+        Recipe recipe = createRecipe("Saved Recipe",1,2,"Add comment",
+                "Add description", "Add steps", 1);
+        RecipeDto recipeDto = recipeService.convertToDto(recipe);
+
+        Assert.assertEquals(recipe.getName(), recipeDto.getName());
+        Assert.assertEquals(recipe.getSteps(), recipeDto.getSteps());
+        Assert.assertEquals(recipe.getDescription(), recipeDto.getDescription());
+        Assert.assertEquals(recipe.getComment(), recipeDto.getComment());
+        Assert.assertEquals(recipe.getCookingMethodId(),
+                cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name()));
+        Assert.assertEquals(recipe.getCategoryId(), categoryService.getCategoryId(recipeDto.getCategory().name()));
+        Assert.assertEquals(recipe.getUserId(), usersService.getIdByUsername(recipeDto.getUsername()));
+    }
+
+    @Test
+    public void convertToDtoMandatoryFieldsOnlyTest() {
+        Recipe recipe = createRecipe("Saved Recipe",null,null,null,
+                null, null, null);
+        RecipeDto recipeDto = recipeService.convertToDto(recipe);
+
+        Assert.assertEquals(recipe.getName(), recipeDto.getName());
+        Assert.assertNull(recipeDto.getUsername());
+        Assert.assertNull(recipeDto.getSteps());
+        Assert.assertNull(recipeDto.getDescription());
+        Assert.assertNull(recipeDto.getComment());
+        Assert.assertNull(recipeDto.getCookingMethod());
+        Assert.assertNull(recipeDto.getCategory());
+    }
+
+    @Test
+    public void convertToDtoAllRecipes() {
+        Recipe recipe = createRecipe("Saved Recipe",1,2,"Add comment",
+                "Add description", "Add steps", 1);
+        Recipe recipe2 = createRecipe("Saved Recipe",null,null,null,
+                null, null, null);
+        recipe.setId(1);
+        recipe2.setId(2);
+
+        List<Recipe> recipes = new ArrayList<>();
+        recipes.add(recipe);
+        recipes.add(recipe2);
+
+        List<AllRecipesDto> recipesDto = recipeService.convertToDto(recipes);
+        Assert.assertEquals(recipes.size(), recipesDto.size());
+        Assert.assertEquals(recipe.getId().intValue(), recipesDto.get(0).getId());
+        Assert.assertEquals(recipe2.getId().intValue(), recipesDto.get(1).getId());
+        Assert.assertEquals(recipe.getName(), recipesDto.get(0).getName());
+        Assert.assertEquals(recipe2.getName(), recipesDto.get(1).getName());
     }
 
     private Recipe createRecipe(String name, Integer categoryId, Integer cookingMethodId, String comment,
