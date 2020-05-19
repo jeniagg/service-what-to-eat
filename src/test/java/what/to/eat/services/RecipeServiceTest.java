@@ -4,11 +4,11 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import what.to.eat.CommonMethods;
 import what.to.eat.dtos.AllRecipesDto;
 import what.to.eat.dtos.CategoryEnum;
 import what.to.eat.dtos.CookingMethodEnum;
 import what.to.eat.dtos.RecipeDto;
-import what.to.eat.entities.Category;
 import what.to.eat.entities.Recipe;
 
 import java.util.ArrayList;
@@ -143,7 +143,7 @@ public class RecipeServiceTest extends ServiceTest {
     @Test
     @DatabaseSetup("/db/scripts/Recipe.xml")
     public void saveRecipe() {
-        Recipe recipe = createRecipe("Saved Recipe",1,2,"Add comment",
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe",1,2,"Add comment",
                 "Add description", "Add steps", 1);
 
         List<Recipe> before = recipeService.getAllRecipes(null, null);
@@ -203,7 +203,7 @@ public class RecipeServiceTest extends ServiceTest {
     @DatabaseSetup("/db/scripts/Category.xml")
     @DatabaseSetup("/db/scripts/CookingMethod.xml")
     public void convertToDtoTest() {
-        Recipe recipe = createRecipe("Saved Recipe",1,2,"Add comment",
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe",1,2,"Add comment",
                 "Add description", "Add steps", 1);
         RecipeDto recipeDto = recipeService.convertToDto(recipe);
 
@@ -219,7 +219,7 @@ public class RecipeServiceTest extends ServiceTest {
 
     @Test
     public void convertToDtoMandatoryFieldsOnlyTest() {
-        Recipe recipe = createRecipe("Saved Recipe",null,null,null,
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe",null,null,null,
                 null, null, null);
         RecipeDto recipeDto = recipeService.convertToDto(recipe);
 
@@ -234,9 +234,9 @@ public class RecipeServiceTest extends ServiceTest {
 
     @Test
     public void convertToDtoAllRecipes() {
-        Recipe recipe = createRecipe("Saved Recipe",1,2,"Add comment",
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe",1,2,"Add comment",
                 "Add description", "Add steps", 1);
-        Recipe recipe2 = createRecipe("Saved Recipe",null,null,null,
+        Recipe recipe2 = CommonMethods.createRecipe("Saved Recipe",null,null,null,
                 null, null, null);
         recipe.setId(1);
         recipe2.setId(2);
@@ -251,18 +251,5 @@ public class RecipeServiceTest extends ServiceTest {
         Assert.assertEquals(recipe2.getId().intValue(), recipesDto.get(1).getId());
         Assert.assertEquals(recipe.getName(), recipesDto.get(0).getName());
         Assert.assertEquals(recipe2.getName(), recipesDto.get(1).getName());
-    }
-
-    private Recipe createRecipe(String name, Integer categoryId, Integer cookingMethodId, String comment,
-                                String description, String steps, Integer userId) {
-        Recipe recipe = new Recipe();
-        recipe.setName(name);
-        recipe.setCategoryId(categoryId);
-        recipe.setCookingMethodId(cookingMethodId);
-        recipe.setComment(comment);
-        recipe.setDescription(description);
-        recipe.setSteps(steps);
-        recipe.setUserId(userId);
-        return recipe;
     }
 }
