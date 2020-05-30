@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.UserDto;
 import what.to.eat.entities.Users;
 import what.to.eat.exception.WebApplicationException;
 import what.to.eat.services.UsersService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for all user related endpoints.
@@ -34,6 +34,26 @@ public class UserController {
 
     @Autowired
     UsersService usersService;
+
+    /**
+     * Retrieve all existing users
+     * @return array with all existing users
+     */
+    @Operation(summary = "Retrieve all users.", description = "Retrieve all existing users.")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @GetMapping
+    public ResponseEntity<List<String>> getAllUsers() {
+
+        LOGGER.info("Calling getAllUsers() endpoint .. ");
+
+        List<Users> users = usersService.getAllUsers();
+        List<String> usernames = new ArrayList<>();
+        for (Users user : users) {
+            usernames.add(user.getUsername());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(usernames);
+    }
 
     /**
      * Retrieve specific user by username

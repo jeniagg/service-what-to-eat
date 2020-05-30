@@ -5,8 +5,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import what.to.eat.entities.Users;
 
+import java.util.ArrayList;
+
 @Repository
 public interface UsersRepository extends CrudRepository<Users, Integer> {
+
+    ArrayList<Users> findAll();
 
     @Query("SELECT u.username FROM Users u WHERE id = ?1")
     String getUsernamebyId(Integer id);

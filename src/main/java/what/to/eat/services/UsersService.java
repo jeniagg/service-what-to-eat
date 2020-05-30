@@ -8,6 +8,7 @@ import what.to.eat.entities.Users;
 import what.to.eat.repositories.UsersRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -15,6 +16,14 @@ public class UsersService {
 
     @Autowired
     UsersRepository usersRepository;
+
+    /**
+     * Get all existing users
+     * @return list with existing users
+     */
+    public List<Users> getAllUsers() {
+        return usersRepository.findAll();
+    }
 
     /**
      * Get specific user by username
