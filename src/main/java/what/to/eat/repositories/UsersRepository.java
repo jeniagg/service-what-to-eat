@@ -13,4 +13,7 @@ public interface UsersRepository extends CrudRepository<Users, Integer> {
 
     @Query("SELECT u.id FROM Users u WHERE username = ?1")
     Integer getIdByUsername(String username);
+
+    @Query("SELECT u FROM Users u WHERE username = ?1")
+    Users getUserByUsername(String username);
 }

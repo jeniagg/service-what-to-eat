@@ -37,6 +37,8 @@ public class RecipeController {
 
     private static final Logger LOGGER = LogManager.getLogger(RecipeController.class);
 
+    private static final String MISSING_RECIPE = "There is no such recipe id.";
+
     @Autowired
     private RecipeService recipeService;
 
@@ -95,7 +97,7 @@ public class RecipeController {
 
         Recipe recipe = recipeService.getRecipeById(id);
         if (recipe == null) {
-            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+            throw new WebApplicationException(MISSING_RECIPE, HttpStatus.NOT_FOUND);
         }
 
         RecipeDto recipeDto = recipeService.convertToDto(recipe);
@@ -165,7 +167,7 @@ public class RecipeController {
         LOGGER.info("Calling update specific recipe endpoint .. ");
 
         if (recipeService.getRecipeById(id) == null) {
-            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+            throw new WebApplicationException(MISSING_RECIPE, HttpStatus.NOT_FOUND);
         }
 
         if ( (recipeDto.getCategory() != null) &&
@@ -208,7 +210,7 @@ public class RecipeController {
 
         Recipe recipe = recipeService.getRecipeById(id);
         if (recipe == null) {
-            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+            throw new WebApplicationException(MISSING_RECIPE, HttpStatus.NOT_FOUND);
         }
         recipeService.deleteRecipe(id);
 
