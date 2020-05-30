@@ -32,4 +32,21 @@ public class CategoryDto implements Serializable {
     public Integer getId() {
         return id;
     }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (! (obj instanceof CategoryDto)) {
+            return false;
+        }
+        CategoryDto other = (CategoryDto) obj;
+        return this.name == other.name;
+    }
 }

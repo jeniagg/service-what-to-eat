@@ -3,6 +3,7 @@ package what.to.eat.dtos;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.io.Serializable;
 
@@ -100,4 +101,15 @@ public class RecipeDto implements Serializable {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+
 }
