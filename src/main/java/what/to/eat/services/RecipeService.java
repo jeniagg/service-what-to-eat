@@ -107,6 +107,16 @@ public class RecipeService {
     }
 
     /**
+     * Deletes a recipe
+     * @param recipeId - id of the recipe to be deleted
+     */
+    public void deleteRecipe(Integer recipeId) {
+        if (recipeRepo.existsById(recipeId)) {
+            recipeRepo.deleteById(recipeId);
+        }
+    }
+
+    /**
      * Transform recipe from {@link RecipeDto} to {@link Recipe}
      * @param recipeDto - the recipeDto to be transformed
      * @return recipe - the transformed recipe

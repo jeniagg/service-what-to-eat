@@ -79,5 +79,30 @@ public class RecipeControllerTest {
             throw ex;
         }
     }
+
+    @Test
+    public void deleteRecipeTest() {
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe", null, null, null,
+                null, null, null);
+        recipe.setId(2);
+        Mockito.when(recipeService.getRecipeById(2)).thenReturn(recipe);
+
+        ResponseEntity responseEntity = recipeController.deleteRecipe(2);
+        Assert.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+
+    }
+
+    @Test(expected = WebApplicationException.class)
+    public void deleteRecipeNonExistingIdTest() {
+        Mockito.when(recipeService.getRecipeById(Mockito.anyInt())).thenReturn(null);
+
+        try {
+            recipeController.deleteRecipe(2);
+        } catch (WebApplicationException ex) {
+            Assert.assertEquals("There is no such recipe id.", ex.getMessage());
+            Assert.assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+            throw ex;
+        }
+    }
 }
 

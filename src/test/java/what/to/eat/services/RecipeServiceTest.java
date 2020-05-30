@@ -165,6 +165,29 @@ public class RecipeServiceTest extends ServiceTest {
     }
 
     @Test
+    @DatabaseSetup("/db/scripts/Recipe.xml")
+    public void deleteRecipeTest() {
+        List<Recipe> recipes = recipeService.getAllRecipes(null, null);
+        Recipe toBeDeleted = recipes.get(1);
+        recipeService.deleteRecipe(1);
+        List<Recipe> newRecipes = recipeService.getAllRecipes(null, null);
+
+        Assert.assertEquals(recipes.size(), newRecipes.size() + 1);
+        Assert.assertTrue(recipes.contains(toBeDeleted));
+        Assert.assertFalse(newRecipes.contains(toBeDeleted));
+    }
+
+    @Test
+    @DatabaseSetup("/db/scripts/Recipe.xml")
+    public void deleteRecipeNonExistingTest() {
+        List<Recipe> recipes = recipeService.getAllRecipes(null, null);
+        recipeService.deleteRecipe(100);
+        List<Recipe> newRecipes = recipeService.getAllRecipes(null, null);
+
+        Assert.assertEquals(recipes.size(), newRecipes.size());
+    }
+
+    @Test
     @DatabaseSetup("/db/scripts/Users.xml")
     @DatabaseSetup("/db/scripts/Category.xml")
     @DatabaseSetup("/db/scripts/CookingMethod.xml")

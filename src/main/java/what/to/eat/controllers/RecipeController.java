@@ -141,4 +141,34 @@ public class RecipeController {
                 .body(recipeService.convertToDto(newRecipe));
     }
 
+    /**
+     * Delete specific recipe by specifying its id
+     *
+     * @param id - recipeId which is going to be deleted
+     * @throws WebApplicationException if the specified id is not present
+     */
+    @Operation(summary = "Delete a recipe.", description = "Delete specific recipe by id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation",
+                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Recipe with this id is not found",
+                    content = @Content(schema = @Schema()))
+    })
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Recipe> deleteRecipe(
+            @Parameter(description = "recipeId", required = true) @PathVariable("id") Integer id) {
+
+        LOGGER.info("Calling delete recipe endpoint .. ");
+
+        Recipe recipe = recipeService.getRecipeById(id);
+        if (recipe == null) {
+            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+        }
+        recipeService.deleteRecipe(id);
+
+        LOGGER.info("Recipe with id {} deleted successfully .. ", id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
