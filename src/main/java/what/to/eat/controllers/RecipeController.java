@@ -107,6 +107,7 @@ public class RecipeController {
      * Create new recipe with the given body
      * @param recipeDto - the body of the recipe to be saved
      * @return the new recipe
+     * @throws WebApplicationException
      */
     @Operation(summary = "Create a recipe.", description = "Create new recipe.")
     @ApiResponses(value = {
@@ -139,6 +140,51 @@ public class RecipeController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(recipeService.convertToDto(newRecipe));
+    }
+
+    /**
+     * Updates the recipe with the given body
+     * @param id - id of the recipe to be updated
+     * @param recipeDto - the body of the recipe to update the recipe with
+     * @throws WebApplicationException
+     */
+    @Operation(summary = "Update a recipe.", description = "Update existing recipe.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully updated", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "400", description = "Mandatory value is missing from the body or" +
+                    " not allowed value is passed for some of the properties", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Recipe with this id is not found",
+                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "415", description = "Missing body", content = @Content(schema = @Schema()))
+    })
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecipeDto> updateRecipe(
+            @Parameter(description = "recipeId", required = true) @PathVariable("id") Integer id,
+            @RequestBody RecipeDto recipeDto){
+
+        LOGGER.info("Calling update specific recipe endpoint .. ");
+
+        if (recipeService.getRecipeById(id) == null) {
+            throw new WebApplicationException("There is no such recipe id.", HttpStatus.NOT_FOUND);
+        }
+
+        if ( (recipeDto.getCategory() != null) &&
+                (!CategoryEnum.isValidCategory(recipeDto.getCategory().name())
+                        || categoryService.getCategoryId(recipeDto.getCategory().name()) == null)) {
+            throw new WebApplicationException("There is no such category.", HttpStatus.BAD_REQUEST);
+        }
+
+        if ( (recipeDto.getCookingMethod() != null) &&
+                (!CookingMethodEnum.isValidCookingMethod(recipeDto.getCookingMethod().name())
+                        || cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name()) == null)) {
+            throw new WebApplicationException("There is no such cooking method.", HttpStatus.BAD_REQUEST);
+        }
+
+        recipeService.updateRecipe(id, recipeDto);
+
+        LOGGER.info("The recipe with id {} was successfully updated", id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     /**

@@ -1,5 +1,6 @@
 package what.to.eat.repositories;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 
     @Query("SELECT r FROM Recipe r WHERE categoryId = ?1 AND cookingMethodId = ?2")
     List<Recipe> getAllRecipesByCategoryIdAndCookingMethodId(Integer categoryId, Integer cookingMethodId);
+
+    @Modifying
+    @Query("UPDATE Recipe SET name = ?2, description = ?3, categoryId = ?4, cookingMethodId = ?5," +
+            "steps = ?6, userId = ?7, comment = ?8 WHERE id = ?1")
+    void updateRecipe(Integer id, String name, String descr, Integer catId, Integer cmId, String steps,
+                        Integer userId, String comment);
 }

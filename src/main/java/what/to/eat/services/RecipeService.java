@@ -107,6 +107,32 @@ public class RecipeService {
     }
 
     /**
+     * Updates recipe with the given body
+     * @param id - id of the recipe to be updated
+     * @param recipeDto - body of the recipe to be updated with
+     */
+    public void updateRecipe(Integer id, RecipeDto recipeDto) {
+        Integer categoryId = null;
+        Integer cookingMethodId = null;
+        Integer userId = null;
+
+        if (recipeDto.getCategory() != null) {
+            categoryId = categoryService.getCategoryId(recipeDto.getCategory().name());
+        }
+
+        if (recipeDto.getCookingMethod() != null) {
+            cookingMethodId = cookingMethodService.getCookingMethodIdbyName(recipeDto.getCookingMethod().name());
+        }
+
+        if (recipeDto.getCategory() != null) {
+            userId = usersService.getIdByUsername(recipeDto.getUsername());
+        }
+
+        recipeRepo.updateRecipe(id, recipeDto.getName(), recipeDto.getDescription(),
+              categoryId, cookingMethodId, recipeDto.getSteps(), userId, recipeDto.getComment());
+    }
+
+    /**
      * Deletes a recipe
      * @param recipeId - id of the recipe to be deleted
      */
