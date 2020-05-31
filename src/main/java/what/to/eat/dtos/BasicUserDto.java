@@ -7,21 +7,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto implements Serializable {
+public class BasicUserDto implements Serializable {
 
     private String username;
-    private String password;
-    private String repeatPassword;
     private String email;
 
     @JsonCreator
-    public UserDto(@JsonProperty(value = "username", required = true) String username,
-                   @JsonProperty(value = "password", required = true) String password,
-                   @JsonProperty(value = "repeatPassword", required = true) String repeatPassword,
+    public BasicUserDto(@JsonProperty(value = "username", required = true) String username,
                    @JsonProperty(value = "email", required = true) String email) {
         this.username = username;
-        this.password = password;
-        this.repeatPassword = repeatPassword;
         this.email = email;
     }
 
@@ -31,22 +25,6 @@ public class UserDto implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRepeatPassword() {
-        return repeatPassword;
-    }
-
-    public void setRepeatPassword(String repeatPassword) {
-        this.repeatPassword = repeatPassword;
     }
 
     public String getEmail() {
@@ -67,10 +45,11 @@ public class UserDto implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (! (obj instanceof UserDto)) {
+        if (! (obj instanceof BasicUserDto)) {
             return false;
         }
-        UserDto other = (UserDto) obj;
+        BasicUserDto other = (BasicUserDto) obj;
         return this.username == other.username;
     }
+
 }
