@@ -94,10 +94,11 @@ public class RecipeServiceTest extends ServiceTest {
                 recipeService.getAllRecipes("MAIN", "FRYING");
 
         List<Recipe> getByCategory = recipeService.getAllRecipes("MAIN", null);
-        List<Recipe> getByCookingMethod =recipeService.getAllRecipes(null, "FRYING");
+        List<Recipe> getByCookingMethod = recipeService.getAllRecipes(null, "FRYING");
         List<Recipe> getAll = recipeService.getAllRecipes(null, null);
         List<Recipe> emptyCategoryAndCookingMethod = recipeService.getAllRecipes("", "");
-        List<Recipe> spaceCategoryAndCookingMethod = recipeService.getAllRecipes(" ", " ");;
+        List<Recipe> spaceCategoryAndCookingMethod = recipeService.getAllRecipes(" ", " ");
+        ;
 
         List<Recipe> wrongCategory = recipeService.getAllRecipes("Wrong", "FRYING");
         List<Recipe> wrongCookingMethod = recipeService.getAllRecipes("MAIN", "Wrong");
@@ -143,7 +144,7 @@ public class RecipeServiceTest extends ServiceTest {
     @Test
     @DatabaseSetup("/db/scripts/Recipe.xml")
     public void saveRecipe() {
-        Recipe recipe = CommonMethods.createRecipe("Saved Recipe",1,2,"Add comment",
+        Recipe recipe = CommonMethods.createRecipe("Saved Recipe", 1, 2, "Add comment",
                 "Add description", "Add steps", 1);
 
         List<Recipe> before = recipeService.getAllRecipes(null, null);
@@ -162,6 +163,54 @@ public class RecipeServiceTest extends ServiceTest {
         Assert.assertEquals(recipe.getSteps(), savedRecipe.getSteps());
         Assert.assertEquals(recipe.getUserId(), savedRecipe.getUserId());
 
+    }
+
+    @Test
+    @DatabaseSetup("/db/scripts/Recipe.xml")
+    @DatabaseSetup("/db/scripts/Users.xml")
+    @DatabaseSetup("/db/scripts/Category.xml")
+    @DatabaseSetup("/db/scripts/CookingMethod.xml")
+    public void updateRecipeTest() {
+        Recipe recipe = recipeService.getRecipeById(1);
+        RecipeDto recipeDto = new RecipeDto(null, "updatedRecipe", "updated descr",
+                "TestUser2","updated steps", CookingMethodEnum.valueOf("BLANCHING"),
+                CategoryEnum.valueOf("ENTREE"), "updated comment");
+        recipeService.updateRecipe(Integer.valueOf("1"), recipeDto);
+        Recipe updatedRecipe = recipeService.getRecipeById(1);
+        RecipeDto updatedRecipeDto = recipeService.convertToDto(updatedRecipe);
+
+        Assert.assertEquals(recipe.getId(), updatedRecipe.getId());
+        Assert.assertEquals(recipeDto.getName(), updatedRecipeDto.getName());
+        Assert.assertEquals(recipeDto.getSteps(), updatedRecipeDto.getSteps());
+        Assert.assertEquals(recipeDto.getDescription(), updatedRecipeDto.getDescription());
+        Assert.assertEquals(recipeDto.getComment(), updatedRecipeDto.getComment());
+        Assert.assertEquals(recipeDto.getCategory(), updatedRecipeDto.getCategory());
+        Assert.assertEquals(recipeDto.getCookingMethod(), updatedRecipeDto.getCookingMethod());
+        Assert.assertEquals(recipeDto.getUsername(), updatedRecipeDto.getUsername());
+    }
+
+    @Test
+    @DatabaseSetup("/db/scripts/Recipe.xml")
+    @DatabaseSetup("/db/scripts/Users.xml")
+    @DatabaseSetup("/db/scripts/Category.xml")
+    @DatabaseSetup("/db/scripts/CookingMethod.xml")
+    public void updateRecipeNullValuesTest() {
+        Recipe recipe = recipeService.getRecipeById(1);
+        RecipeDto recipeDto = new RecipeDto(null, "updatedRecipe", null,
+                null,null, null,
+                null, null);
+        recipeService.updateRecipe(Integer.valueOf("1"), recipeDto);
+        Recipe updatedRecipe = recipeService.getRecipeById(1);
+        RecipeDto updatedRecipeDto = recipeService.convertToDto(updatedRecipe);
+
+        Assert.assertEquals(recipe.getId(), updatedRecipe.getId());
+        Assert.assertEquals(recipeDto.getName(), updatedRecipeDto.getName());
+        Assert.assertNull(updatedRecipeDto.getSteps());
+        Assert.assertNull(updatedRecipeDto.getDescription());
+        Assert.assertNull(updatedRecipeDto.getComment());
+        Assert.assertNull(updatedRecipeDto.getCategory());
+        Assert.assertNull(updatedRecipeDto.getCookingMethod());
+        Assert.assertNull(updatedRecipeDto.getUsername());
     }
 
     @Test

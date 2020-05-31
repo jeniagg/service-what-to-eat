@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <users id="1" username="TestUser" password="password" email="test@email" />
+    <users id="2" username="TestUser2" password="password" email="test@email" />
 </dataset>
