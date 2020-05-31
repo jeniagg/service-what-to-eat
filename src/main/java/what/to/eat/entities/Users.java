@@ -20,6 +20,9 @@ public class Users {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "salt")
+    private byte[] salt;
+
     public Integer getId() {
         return id;
     }
@@ -50,5 +53,13 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 }

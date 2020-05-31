@@ -104,23 +104,47 @@ public class UsersService {
         return password.matches(regex);
     }
 
+    public boolean areCredentialsValid(String username, String password) throws NoSuchAlgorithmException {
+        Users existingUser = getUserByUsername(username);
+        String existingPassword = existingUser.getPassword();
+        byte[] salt = existingUser.getSalt();
+        String encryptNewPassword = hashedPassword(password, salt);
+        return existingPassword.equals(encryptNewPassword);
+    }
+
     /**
      * Saves new user to the database
      * @param user - user to be saved
      * @return the saved user
      */
-    public Users saveUser(Users user) {
+    public Users saveUser(Users user) throws NoSuchAlgorithmException {
+        byte[] salt = getSalt();
+        String encryptedPassword = hashedPassword(user.getPassword(), salt);
+        user.setPassword(encryptedPassword);
+        user.setSalt(salt);
         return usersRepository.save(user);
+    }
+
+    /**
+     * Updates an user
+     * @param username - of the user to be updated
+     * @param password - new password
+     * @param email - new email
+     */
+    public void updateUser(String username, String password, String email) throws NoSuchAlgorithmException {
+        byte[] salt = getSalt();
+        String encryptedPassword = hashedPassword(password, salt);
+        usersRepository.updateUser(username, encryptedPassword, salt, email);
     }
 
     /**
      * Encrypt the given password
      * @param password - password to be encrypted
+     * @param salt - salt to be used for the encryption
      * @return the encrypted password
      * @throws NoSuchAlgorithmException
      */
-    public String encryptPassword(String password) throws NoSuchAlgorithmException {
-        byte[] salt = getSalt();
+    private String hashedPassword(String password, byte[] salt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(salt);
         byte[] bytes = md.digest(password.getBytes());
@@ -168,4 +192,5 @@ public class UsersService {
 
         return user;
     }
+
 }

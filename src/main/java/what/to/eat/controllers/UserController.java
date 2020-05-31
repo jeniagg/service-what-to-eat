@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import what.to.eat.dtos.BasicUserDto;
+import what.to.eat.dtos.UpdateUserDto;
 import what.to.eat.dtos.UserDto;
 import what.to.eat.entities.Users;
 import what.to.eat.exception.WebApplicationException;
@@ -119,19 +120,73 @@ public class UserController {
             throw new WebApplicationException("This is not a valid password", HttpStatus.BAD_REQUEST);
         }
 
+        Users user = usersService.convertToEntity(userDto);
         try {
-            String encryptedPassword = usersService.encryptPassword(userDto.getPassword());
-            userDto.setPassword(encryptedPassword);
-        } catch (NoSuchAlgorithmException ex){
+            usersService.saveUser(user);
+        } catch (NoSuchAlgorithmException ex) {
             LOGGER.error(ex.getMessage(), ex.getStackTrace());
             throw new WebApplicationException("Error occurs while saving the user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        Users user = usersService.convertToEntity(userDto);
-        usersService.saveUser(user);
-
         LOGGER.info("The new user was successfully created");
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * Update user with the given body
+     * @param username - the username of the user who will be updated
+     * @param userDto - the body of the user to be updated with
+     * @return the updated user
+     * @throws WebApplicationException
+     */
+    @Operation(summary = "Update an user.", description = "Update existing user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "400", description = "Mandatory value is missing from the body or" +
+                    " not allowed value is passed for some of the properties", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "User with this username do not exists",
+                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "415", description = "Missing body", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+    })
+    @PutMapping(value = "/{username}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> updateUser(
+            @Parameter(description = "username", required = true) @PathVariable("username") String username,
+            @RequestBody UpdateUserDto userDto) throws NoSuchAlgorithmException {
+
+        LOGGER.info("Calling update specific user endpoint .. ");
+
+        if (usersService.getUserByUsername(username) == null) {
+            throw new WebApplicationException("There is no such user.", HttpStatus.NOT_FOUND);
+        }
+
+        if (StringUtils.isBlank(userDto.getOldPassword()) || StringUtils.isBlank(userDto.getPassword()) ||
+                StringUtils.isBlank(userDto.getRepeatPassword()) || StringUtils.isBlank(userDto.getEmail())) {
+            throw new WebApplicationException("There are missing required properties.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!usersService.areCredentialsValid(username, userDto.getOldPassword())) {
+            throw new WebApplicationException("Invalid combination from username and password", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!usersService.isEmailValid(userDto.getEmail())) {
+            throw new WebApplicationException("This is not a valid email", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!usersService.isPasswordValid(userDto.getPassword(), userDto.getRepeatPassword())) {
+            throw new WebApplicationException("This is not a valid password", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            usersService.updateUser(username, userDto.getPassword(), userDto.getEmail());
+        } catch (NoSuchAlgorithmException ex){
+            LOGGER.error(ex.getMessage(), ex.getStackTrace());
+            throw new WebApplicationException("Error occurs while updating the user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        LOGGER.info("The user was successfully updated");
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

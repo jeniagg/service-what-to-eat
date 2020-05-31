@@ -9,4 +9,5 @@
     <include file="/db/scripts/create-tables.sql"/>
     <include file="/db/scripts/populate-category-table.sql"/>
     <include file="/db/scripts/populate-cooking_method-table.sql"/>
+    <include file="/db/scripts/users-table-add-column.sql"/>
 </databaseChangeLog>

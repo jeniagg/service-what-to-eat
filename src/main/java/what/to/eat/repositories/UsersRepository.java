@@ -1,5 +1,6 @@
 package what.to.eat.repositories;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,8 @@ public interface UsersRepository extends CrudRepository<Users, Integer> {
 
     @Query("SELECT u FROM Users u WHERE username = ?1")
     Users getUserByUsername(String username);
+
+    @Modifying
+    @Query("UPDATE Users SET password = ?2, salt = ?3, email = ?4 WHERE username = ?1")
+    void updateUser(String username, String password, byte[] salt, String email);
 }
