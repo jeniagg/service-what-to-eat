@@ -137,7 +137,6 @@ public class UserController {
      * Update user with the given body
      * @param username - the username of the user who will be updated
      * @param userDto - the body of the user to be updated with
-     * @return the updated user
      * @throws WebApplicationException
      */
     @Operation(summary = "Update an user.", description = "Update existing user.")
@@ -189,4 +188,29 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    /**
+     * Delete specific user by username
+     * @param username - the username of the user to be deleted
+     * @throws WebApplicationException
+     */
+    @Operation(summary = "Delete an user.", description = "Delete specific user by username.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "User with this username is not found",
+                    content = @Content(schema = @Schema()))
+    })
+    @DeleteMapping(value = "/{username}")
+    public ResponseEntity<UserDto> deleteUser(
+            @Parameter(description = "username", required = true) @PathVariable("username") String username) {
+        LOGGER.info("Calling delete specific user endpoint .. ");
+
+        Users user = usersService.getUserByUsername(username);
+        if (user == null) {
+            throw new WebApplicationException("There is no such user.", HttpStatus.NOT_FOUND);
+        }
+        usersService.deleteUser(user);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

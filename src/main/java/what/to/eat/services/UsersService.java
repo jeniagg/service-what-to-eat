@@ -138,6 +138,14 @@ public class UsersService {
     }
 
     /**
+     * Deletes the given user
+     * @param user - user to be deleted
+     */
+    public void deleteUser(Users user) {
+        usersRepository.delete(user);
+    }
+
+    /**
      * Encrypt the given password
      * @param password - password to be encrypted
      * @param salt - salt to be used for the encryption
